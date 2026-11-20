@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
+import RevenueChart from "@/components/charts/RevenueChart";
+import SalesByCategoryChart from "@/components/charts/SalesByCategoryChart";
 import RecentActivity from "@/components/dashboard/RecentActivity";
 import StatCard from "@/components/dashboard/StatCard";
 import { Card, CardHeader } from "@/components/ui/Card";
 import PageHeader from "@/components/ui/PageHeader";
-import { kpis, recentActivity } from "@/data/dashboard";
+import {
+  kpis,
+  recentActivity,
+  revenueData,
+  salesByCategory,
+} from "@/data/dashboard";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -29,13 +36,23 @@ export default function DashboardPage() {
             title="Revenue overview"
             description="Monthly revenue for the last 12 months."
           />
-          <div className="flex h-72 items-center justify-center text-sm text-muted-foreground">
-            Revenue chart coming in the next step
+          <div className="p-5">
+            <RevenueChart data={revenueData} />
           </div>
         </Card>
 
         <RecentActivity activities={recentActivity} />
       </div>
+
+      <Card className="mt-6">
+        <CardHeader
+          title="Sales by category"
+          description="Total sales per product category this month."
+        />
+        <div className="p-5">
+          <SalesByCategoryChart data={salesByCategory} />
+        </div>
+      </Card>
     </>
   );
 }

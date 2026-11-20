@@ -1,12 +1,12 @@
 import { DollarSign, Percent, ShoppingCart, Users } from "lucide-react";
-import type { Activity, Kpi } from "@/types";
+import type { Activity, CategorySales, Kpi, RevenuePoint } from "@/types";
 
 export const kpis: Kpi[] = [
   {
     id: "revenue",
     title: "Total Revenue",
     value: "$48,290",
-    change: 12.5,
+    change: 3.2,
     icon: DollarSign,
   },
   {
@@ -30,6 +30,30 @@ export const kpis: Kpi[] = [
     change: 0.6,
     icon: Percent,
   },
+];
+
+export const revenueData: RevenuePoint[] = [
+  { month: "Dec", revenue: 31200 },
+  { month: "Jan", revenue: 29800 },
+  { month: "Feb", revenue: 33400 },
+  { month: "Mar", revenue: 36100 },
+  { month: "Apr", revenue: 38700 },
+  { month: "May", revenue: 37900 },
+  { month: "Jun", revenue: 41200 },
+  { month: "Jul", revenue: 43600 },
+  { month: "Aug", revenue: 42100 },
+  { month: "Sep", revenue: 45300 },
+  { month: "Oct", revenue: 46800 },
+  { month: "Nov", revenue: 48290 },
+];
+
+export const salesByCategory: CategorySales[] = [
+  { category: "Electronics", sales: 18400 },
+  { category: "Clothing", sales: 12900 },
+  { category: "Home", sales: 9700 },
+  { category: "Sports", sales: 7300 },
+  { category: "Beauty", sales: 5600 },
+  { category: "Toys", sales: 3900 },
 ];
 
 export const recentActivity: Activity[] = [

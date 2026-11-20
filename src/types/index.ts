@@ -23,3 +23,13 @@ export type Activity = {
   description: string;
   time: string;
 };
+
+export type RevenuePoint = {
+  month: string;
+  revenue: number;
+};
+
+export type CategorySales = {
+  category: string;
+  sales: number;
+};
