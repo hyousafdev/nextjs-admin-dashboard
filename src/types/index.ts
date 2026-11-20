@@ -5,3 +5,21 @@ export type NavItem = {
   href: string;
   icon: LucideIcon;
 };
+
+export type Kpi = {
+  id: string;
+  title: string;
+  value: string;
+  change: number;
+  icon: LucideIcon;
+};
+
+export type ActivityType = "order" | "user" | "payment" | "product";
+
+export type Activity = {
+  id: string;
+  type: ActivityType;
+  title: string;
+  description: string;
+  time: string;
+};
