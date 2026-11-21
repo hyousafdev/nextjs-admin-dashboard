@@ -3,7 +3,8 @@ import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import {
   UserRoleBadge,
   UserStatusBadge,
-} from "./UserBadges";
+} from "@/components/users/UserBadges";
+import UserActions from "./UserActions";
 import { buildHref } from "@/lib/url";
 import { toUsersParams } from "@/lib/users";
 import type { UsersQuery } from "@/lib/users";
@@ -77,7 +78,7 @@ type UsersTableProps = {
 export default function UsersTable({ users, query }: UsersTableProps) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[760px] text-left text-sm">
+      <table className="w-full min-w-[820px] text-left text-sm">
         <thead className="border-b bg-muted/50 text-muted-foreground">
           <tr>
             <SortHeader label="User" sortKey="name" query={query} />
@@ -103,6 +104,9 @@ export default function UsersTable({ users, query }: UsersTableProps) {
               query={query}
               align="right"
             />
+            <th scope="col" className="w-12 px-4 py-3">
+              <span className="sr-only">Actions</span>
+            </th>
           </tr>
         </thead>
 
@@ -142,6 +146,9 @@ export default function UsersTable({ users, query }: UsersTableProps) {
               <td className="px-4 py-3 text-right">{user.orders}</td>
               <td className="px-4 py-3 text-right font-medium">
                 {formatCurrency(user.totalSpent)}
+              </td>
+              <td className="px-4 py-3 text-right">
+                <UserActions user={user} />
               </td>
             </tr>
           ))}
