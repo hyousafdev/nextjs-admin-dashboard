@@ -84,3 +84,28 @@ export type Product = {
   sales: number;
   description: string;
 };
+
+export type OrderStatus =
+  | "pending"
+  | "processing"
+  | "shipped"
+  | "delivered"
+  | "cancelled";
+
+export type PaymentMethod = "card" | "paypal" | "cod";
+
+export type OrdersSort = "newest" | "oldest" | "total-desc" | "total-asc";
+
+export type OrderItem = {
+  productId: number;
+  quantity: number;
+};
+
+export type Order = {
+  id: string;
+  customerId: number;
+  status: OrderStatus;
+  createdAt: string;
+  paymentMethod: PaymentMethod;
+  items: OrderItem[];
+};
