@@ -5,9 +5,13 @@ import type { Kpi } from "@/types";
 
 type StatCardProps = {
   kpi: Kpi;
+  comparisonLabel?: string;
 };
 
-export default function StatCard({ kpi }: StatCardProps) {
+export default function StatCard({
+  kpi,
+  comparisonLabel = "vs last month",
+}: StatCardProps) {
   const isPositive = kpi.change >= 0;
   const Icon = kpi.icon;
   const TrendIcon = isPositive ? TrendingUp : TrendingDown;
@@ -34,7 +38,9 @@ export default function StatCard({ kpi }: StatCardProps) {
         <TrendIcon className="h-4 w-4" />
         {isPositive ? "+" : ""}
         {kpi.change}%
-        <span className="font-normal text-muted-foreground">vs last month</span>
+        <span className="font-normal text-muted-foreground">
+          {comparisonLabel}
+        </span>
       </p>
     </Card>
   );

@@ -109,3 +109,22 @@ export type Order = {
   paymentMethod: PaymentMethod;
   items: OrderItem[];
 };
+
+export type AnalyticsRange = "7d" | "30d" | "90d" | "12m";
+
+export type TrafficPoint = {
+  label: string;
+  visitors: number;
+  pageViews: number;
+};
+
+export type ChartSlice = {
+  name: string;
+  value: number;
+  color: string;
+};
+
+export type TopProduct = {
+  name: string;
+  revenue: number;
+};
