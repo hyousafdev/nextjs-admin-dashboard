@@ -53,3 +53,34 @@ export type User = {
   orders: number;
   totalSpent: number;
 };
+
+export type ProductCategory =
+  | "Electronics"
+  | "Clothing"
+  | "Home"
+  | "Sports"
+  | "Beauty"
+  | "Toys";
+
+export type StockStatus = "in-stock" | "low-stock" | "out-of-stock";
+
+export type ProductsSort =
+  | "name"
+  | "price-asc"
+  | "price-desc"
+  | "stock-asc"
+  | "sales";
+
+export type ProductsView = "grid" | "table";
+
+export type Product = {
+  id: number;
+  name: string;
+  sku: string;
+  category: ProductCategory;
+  price: number;
+  stock: number;
+  rating: number;
+  sales: number;
+  description: string;
+};
