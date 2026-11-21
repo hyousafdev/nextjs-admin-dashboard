@@ -130,3 +130,12 @@ export async function getUsers(query: UsersQuery): Promise<UsersResult> {
     totalPages,
   };
 }
+
+export function findUserById(id: number): User | undefined {
+  return allUsers.find((user) => user.id === id);
+}
+
+export async function getUserById(id: number): Promise<User | undefined> {
+  await delay(400);
+  return findUserById(id);
+}

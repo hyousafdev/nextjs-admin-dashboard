@@ -1,24 +1,14 @@
 import Link from "next/link";
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
-import Badge from "@/components/ui/Badge";
-import type { BadgeVariant } from "@/components/ui/Badge";
+import {
+  UserRoleBadge,
+  UserStatusBadge,
+} from "./UserBadges";
 import { buildHref } from "@/lib/url";
 import { toUsersParams } from "@/lib/users";
 import type { UsersQuery } from "@/lib/users";
 import { cn, formatCurrency, formatDate, getInitials } from "@/lib/utils";
-import type { User, UserRole, UserStatus, UsersSortKey } from "@/types";
-
-const statusVariants: Record<UserStatus, BadgeVariant> = {
-  active: "success",
-  inactive: "neutral",
-  pending: "warning",
-};
-
-const roleVariants: Record<UserRole, BadgeVariant> = {
-  admin: "primary",
-  manager: "warning",
-  customer: "neutral",
-};
+import type { User, UsersSortKey } from "@/types";
 
 type SortHeaderProps = {
   label: string;
@@ -125,7 +115,12 @@ export default function UsersTable({ users, query }: UsersTableProps) {
                     {getInitials(user.name)}
                   </div>
                   <div className="min-w-0">
-                    <p className="font-medium">{user.name}</p>
+                    <Link
+                      href={`/users/${user.id}`}
+                      className="font-medium hover:underline"
+                    >
+                      {user.name}
+                    </Link>
                     <p className="truncate text-muted-foreground">
                       {user.email}
                     </p>
@@ -133,12 +128,10 @@ export default function UsersTable({ users, query }: UsersTableProps) {
                 </div>
               </td>
               <td className="px-4 py-3">
-                <Badge variant={roleVariants[user.role]}>{user.role}</Badge>
+                <UserRoleBadge role={user.role} />
               </td>
               <td className="px-4 py-3">
-                <Badge variant={statusVariants[user.status]}>
-                  {user.status}
-                </Badge>
+                <UserStatusBadge status={user.status} />
               </td>
               <td className="px-4 py-3 text-muted-foreground">
                 {user.country}
