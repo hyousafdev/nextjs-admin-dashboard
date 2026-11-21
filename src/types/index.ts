@@ -33,3 +33,23 @@ export type CategorySales = {
   category: string;
   sales: number;
 };
+
+export type SortOrder = "asc" | "desc";
+
+export type UserRole = "admin" | "manager" | "customer";
+
+export type UserStatus = "active" | "inactive" | "pending";
+
+export type UsersSortKey = "name" | "joinedAt" | "orders" | "totalSpent";
+
+export type User = {
+  id: number;
+  name: string;
+  email: string;
+  role: UserRole;
+  status: UserStatus;
+  country: string;
+  joinedAt: string;
+  orders: number;
+  totalSpent: number;
+};

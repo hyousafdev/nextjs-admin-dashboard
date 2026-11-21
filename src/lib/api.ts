@@ -7,7 +7,7 @@ import {
 import type { Activity, CategorySales, Kpi, RevenuePoint } from "@/types";
 
 // Simulates network latency so loading states can be seen.
-function delay(ms: number) {
+export function delay(ms: number) {
   return new Promise<void>((resolve) => setTimeout(resolve, ms));
 }
 
