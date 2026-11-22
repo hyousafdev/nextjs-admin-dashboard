@@ -1,26 +1,19 @@
 "use client";
 
-import {
-  Bell,
-  Menu,
-  PanelLeftClose,
-  PanelLeftOpen,
-  Search,
-} from "lucide-react";
+import { Bell, Menu, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import GlobalSearch from "@/components/search/GlobalSearch";
 import ThemeToggle from "@/components/theme/ThemeToggle";
 
 type TopbarProps = {
   isCollapsed: boolean;
   onToggleCollapse: () => void;
   onOpenMobile: () => void;
-  onOpenSearch: () => void;
 };
 
 export default function Topbar({
   isCollapsed,
   onToggleCollapse,
   onOpenMobile,
-  onOpenSearch,
 }: TopbarProps) {
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b bg-card/80 px-4 backdrop-blur sm:px-6">
@@ -46,18 +39,7 @@ export default function Topbar({
         )}
       </button>
 
-      <button
-        type="button"
-        onClick={onOpenSearch}
-        aria-label="Open search"
-        className="ml-1 flex h-9 max-w-md flex-1 items-center gap-2 rounded-lg border bg-muted px-3 text-sm text-muted-foreground hover:bg-muted/70"
-      >
-        <Search className="h-4 w-4 shrink-0" />
-        <span className="flex-1 text-left">Search...</span>
-        <kbd className="hidden rounded border bg-card px-1.5 py-0.5 text-xs sm:inline">
-          Ctrl K
-        </kbd>
-      </button>
+      <GlobalSearch />
 
       <div className="ml-auto flex items-center gap-1">
         <ThemeToggle />
