@@ -13,6 +13,7 @@ type ModalProps = {
   children?: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
+  variant?: "default" | "bare";
 };
 
 const focusableSelector =
@@ -26,10 +27,12 @@ export default function Modal({
   children,
   footer,
   className,
+  variant = "default",
 }: ModalProps) {
   const titleId = useId();
   const descriptionId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
+  const isBare = variant === "bare";
 
   // Always call the latest onClose without re-running the main effect
   // (otherwise focus would jump back to the dialog on every re-render).
@@ -47,7 +50,12 @@ export default function Modal({
     const previousOverflow = document.body.style.overflow;
 
     document.body.style.overflow = "hidden";
-    dialogRef.current?.focus();
+
+    // Move focus into the dialog, unless a child (like an autofocus input)
+    // already took it.
+    if (!dialogRef.current?.contains(document.activeElement)) {
+      dialogRef.current?.focus();
+    }
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -94,7 +102,12 @@ export default function Modal({
   }
 
   return createPortal(
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+    <div
+      className={cn(
+        "fixed inset-0 z-[60] flex justify-center p-4",
+        isBare ? "items-start pt-[12vh]" : "items-center",
+      )}
+    >
       <div
         className="absolute inset-0 bg-black/50"
         onClick={onClose}
@@ -105,39 +118,42 @@ export default function Modal({
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
-        aria-labelledby={titleId}
-        aria-describedby={description ? descriptionId : undefined}
+        aria-labelledby={isBare ? undefined : titleId}
+        aria-label={isBare ? title : undefined}
+        aria-describedby={!isBare && description ? descriptionId : undefined}
         tabIndex={-1}
         className={cn(
           "relative w-full max-w-md rounded-xl border bg-card shadow-xl outline-none",
           className,
         )}
       >
-        <div className="flex items-start justify-between gap-4 border-b p-5">
-          <div>
-            <h2 id={titleId} className="text-lg font-semibold">
-              {title}
-            </h2>
-            {description && (
-              <p
-                id={descriptionId}
-                className="mt-1 text-sm text-muted-foreground"
-              >
-                {description}
-              </p>
-            )}
+        {!isBare && (
+          <div className="flex items-start justify-between gap-4 border-b p-5">
+            <div>
+              <h2 id={titleId} className="text-lg font-semibold">
+                {title}
+              </h2>
+              {description && (
+                <p
+                  id={descriptionId}
+                  className="mt-1 text-sm text-muted-foreground"
+                >
+                  {description}
+                </p>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close dialog"
+              className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted"
+            >
+              <X className="h-4 w-4" />
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close dialog"
-            className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
+        )}
 
-        {children && <div className="p-5">{children}</div>}
+        {isBare ? children : children && <div className="p-5">{children}</div>}
 
         {footer && (
           <div className="flex justify-end gap-2 border-t p-4">{footer}</div>

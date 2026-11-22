@@ -13,12 +13,14 @@ type TopbarProps = {
   isCollapsed: boolean;
   onToggleCollapse: () => void;
   onOpenMobile: () => void;
+  onOpenSearch: () => void;
 };
 
 export default function Topbar({
   isCollapsed,
   onToggleCollapse,
   onOpenMobile,
+  onOpenSearch,
 }: TopbarProps) {
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b bg-card/80 px-4 backdrop-blur sm:px-6">
@@ -44,16 +46,18 @@ export default function Topbar({
         )}
       </button>
 
-      <div className="relative ml-1 max-w-md flex-1">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <input
-          type="search"
-          placeholder="Search (coming soon)"
-          aria-label="Search"
-          disabled
-          className="h-9 w-full rounded-lg border bg-muted pl-9 pr-3 text-sm placeholder:text-muted-foreground disabled:cursor-not-allowed"
-        />
-      </div>
+      <button
+        type="button"
+        onClick={onOpenSearch}
+        aria-label="Open search"
+        className="ml-1 flex h-9 max-w-md flex-1 items-center gap-2 rounded-lg border bg-muted px-3 text-sm text-muted-foreground hover:bg-muted/70"
+      >
+        <Search className="h-4 w-4 shrink-0" />
+        <span className="flex-1 text-left">Search...</span>
+        <kbd className="hidden rounded border bg-card px-1.5 py-0.5 text-xs sm:inline">
+          Ctrl K
+        </kbd>
+      </button>
 
       <div className="ml-auto flex items-center gap-1">
         <ThemeToggle />
