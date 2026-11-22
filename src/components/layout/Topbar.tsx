@@ -7,6 +7,7 @@ import {
   PanelLeftOpen,
   Search,
 } from "lucide-react";
+import ThemeToggle from "@/components/theme/ThemeToggle";
 
 type TopbarProps = {
   isCollapsed: boolean;
@@ -54,7 +55,8 @@ export default function Topbar({
         />
       </div>
 
-      <div className="ml-auto flex items-center gap-2">
+      <div className="ml-auto flex items-center gap-1">
+        <ThemeToggle />
         <button
           type="button"
           aria-label="Notifications"
@@ -62,7 +64,7 @@ export default function Topbar({
         >
           <Bell className="h-5 w-5" />
         </button>
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+        <div className="ml-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
           AU
         </div>
       </div>

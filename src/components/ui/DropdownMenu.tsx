@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { MoreHorizontal } from "lucide-react";
+import { Check, MoreHorizontal } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -11,16 +11,23 @@ export type DropdownItem = {
   icon?: LucideIcon;
   onSelect: () => void;
   destructive?: boolean;
+  checked?: boolean;
 };
 
 type DropdownMenuProps = {
   label: string;
   items: DropdownItem[];
+  children?: React.ReactNode;
 };
 
 const ITEM_HEIGHT = 40;
+const ITEM_SELECTOR = '[role^="menuitem"]';
 
-export default function DropdownMenu({ label, items }: DropdownMenuProps) {
+export default function DropdownMenu({
+  label,
+  items,
+  children,
+}: DropdownMenuProps) {
   const [position, setPosition] = useState<{
     top: number;
     right: number;
@@ -61,7 +68,7 @@ export default function DropdownMenu({ label, items }: DropdownMenuProps) {
       return;
     }
 
-    menuRef.current?.querySelector<HTMLElement>('[role="menuitem"]')?.focus();
+    menuRef.current?.querySelector<HTMLElement>(ITEM_SELECTOR)?.focus();
 
     function handlePointerDown(event: MouseEvent) {
       const target = event.target as Node;
@@ -91,7 +98,7 @@ export default function DropdownMenu({ label, items }: DropdownMenuProps) {
 
   function handleMenuKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
     const menuItems = Array.from(
-      menuRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? [],
+      menuRef.current?.querySelectorAll<HTMLElement>(ITEM_SELECTOR) ?? [],
     );
     const index = menuItems.indexOf(document.activeElement as HTMLElement);
 
@@ -127,7 +134,7 @@ export default function DropdownMenu({ label, items }: DropdownMenuProps) {
         onClick={() => (isOpen ? closeMenu(false) : openMenu())}
         className="rounded-lg p-2 text-muted-foreground hover:bg-muted hover:text-foreground"
       >
-        <MoreHorizontal className="h-4 w-4" />
+        {children ?? <MoreHorizontal className="h-4 w-4" />}
       </button>
 
       {isOpen &&
@@ -144,12 +151,14 @@ export default function DropdownMenu({ label, items }: DropdownMenuProps) {
           >
             {items.map((item) => {
               const Icon = item.icon;
+              const isCheckable = item.checked !== undefined;
 
               return (
                 <button
                   key={item.label}
                   type="button"
-                  role="menuitem"
+                  role={isCheckable ? "menuitemradio" : "menuitem"}
+                  aria-checked={isCheckable ? item.checked : undefined}
                   tabIndex={-1}
                   onClick={() => {
                     closeMenu();
@@ -161,7 +170,8 @@ export default function DropdownMenu({ label, items }: DropdownMenuProps) {
                   )}
                 >
                   {Icon && <Icon className="h-4 w-4" />}
-                  {item.label}
+                  <span className="flex-1 text-left">{item.label}</span>
+                  {item.checked && <Check className="h-4 w-4" />}
                 </button>
               );
             })}
