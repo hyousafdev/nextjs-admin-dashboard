@@ -1,6 +1,7 @@
 "use client";
 
 import { Bell, Menu, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import UserMenu from "@/components/layout/UserMenu";
 import GlobalSearch from "@/components/search/GlobalSearch";
 import ThemeToggle from "@/components/theme/ThemeToggle";
 
@@ -50,9 +51,7 @@ export default function Topbar({
         >
           <Bell className="h-5 w-5" />
         </button>
-        <div className="ml-1 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-          AU
-        </div>
+        <UserMenu />
       </div>
     </header>
   );

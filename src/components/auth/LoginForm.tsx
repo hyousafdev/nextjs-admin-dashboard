@@ -8,12 +8,18 @@ import { inputClass } from "@/components/auth/authStyles";
 import PasswordInput from "@/components/auth/PasswordInput";
 import SubmitButton from "@/components/auth/SubmitButton";
 
-export default function LoginForm() {
+type LoginFormProps = {
+  next?: string;
+};
+
+export default function LoginForm({ next }: LoginFormProps) {
   const [state, formAction] = useActionState(loginAction, undefined);
   const errors = state?.errors ?? {};
 
   return (
     <form action={formAction} noValidate className="space-y-5">
+      <input type="hidden" name="next" value={next ?? ""} />
+
       {state?.message && (
         <p
           role="alert"

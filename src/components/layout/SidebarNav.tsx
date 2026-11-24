@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
+import { canAccess } from "@/lib/auth-access";
 import { navItems } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
@@ -15,10 +17,16 @@ export default function SidebarNav({
   onNavigate,
 }: SidebarNavProps) {
   const pathname = usePathname();
+  const user = useCurrentUser();
+
+  // Links the user cannot open are not shown at all.
+  const visibleItems = navItems.filter((item) =>
+    canAccess(item.href, user.role),
+  );
 
   return (
     <nav aria-label="Main" className="flex-1 space-y-1 p-3">
-      {navItems.map((item) => {
+      {visibleItems.map((item) => {
         const isActive =
           pathname === item.href || pathname.startsWith(`${item.href}/`);
         const Icon = item.icon;

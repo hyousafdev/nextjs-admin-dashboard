@@ -2,10 +2,12 @@
 
 import { redirect } from "next/navigation";
 import { delay } from "@/lib/api";
-import { createAccount, findAccountByEmail } from "@/lib/auth-store";
+import { getSafeRedirect } from "@/lib/auth-access";
 import { loginSchema, signupSchema } from "@/lib/auth-schemas";
+import { createAccount, findAccountByEmail } from "@/lib/auth-store";
 import type { AuthFormState, FieldErrors } from "@/lib/auth-types";
 import { verifyPassword } from "@/lib/password";
+import { createSession, deleteSession } from "@/lib/session";
 import type { z } from "zod";
 
 function getString(formData: FormData, key: string): string {
@@ -57,7 +59,14 @@ export async function loginAction(
     };
   }
 
-  redirect("/dashboard");
+  await createSession({
+    id: account.id,
+    name: account.name,
+    email: account.email,
+    role: account.role,
+  });
+
+  redirect(getSafeRedirect(getString(formData, "next")));
 }
 
 export async function signupAction(
@@ -89,11 +98,23 @@ export async function signupAction(
     };
   }
 
-  await createAccount({
+  const account = await createAccount({
     name: parsed.data.name,
     email: parsed.data.email,
     password: parsed.data.password,
   });
 
+  await createSession({
+    id: account.id,
+    name: account.name,
+    email: account.email,
+    role: account.role,
+  });
+
   redirect("/dashboard");
+}
+
+export async function logoutAction(): Promise<void> {
+  await deleteSession();
+  redirect("/login");
 }

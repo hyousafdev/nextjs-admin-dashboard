@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 import Button from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
+import type { AuthRole } from "@/lib/auth-types";
 import { getInitials } from "@/lib/utils";
 
 type ProfileValues = {
@@ -17,15 +19,22 @@ type FormErrors = Partial<Record<"name" | "email" | "bio", string>>;
 
 const BIO_LIMIT = 160;
 
+const jobTitles: Record<AuthRole, string> = {
+  admin: "Store Administrator",
+  manager: "Store Manager",
+  viewer: "Viewer",
+};
+
 const fieldClass =
   "mt-1 w-full rounded-lg border bg-card px-3 text-sm outline-none focus:ring-2 focus:ring-primary/40 aria-invalid:border-danger";
 
 export default function ProfileForm() {
   const { toast } = useToast();
+  const currentUser = useCurrentUser();
   const [values, setValues] = useState<ProfileValues>({
-    name: "Admin User",
-    email: "admin@example.com",
-    jobTitle: "Store Administrator",
+    name: currentUser.name,
+    email: currentUser.email,
+    jobTitle: jobTitles[currentUser.role],
     bio: "Managing the store, one order at a time.",
   });
   const [errors, setErrors] = useState<FormErrors>({});

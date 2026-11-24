@@ -17,15 +17,18 @@ export type DropdownItem = {
 type DropdownMenuProps = {
   label: string;
   items: DropdownItem[];
+  header?: React.ReactNode;
   children?: React.ReactNode;
 };
 
 const ITEM_HEIGHT = 40;
+const HEADER_HEIGHT = 96;
 const ITEM_SELECTOR = '[role^="menuitem"]';
 
 export default function DropdownMenu({
   label,
   items,
+  header,
   children,
 }: DropdownMenuProps) {
   const [position, setPosition] = useState<{
@@ -46,7 +49,8 @@ export default function DropdownMenu({
       return;
     }
 
-    const menuHeight = items.length * ITEM_HEIGHT + 8;
+    const menuHeight =
+      items.length * ITEM_HEIGHT + (header ? HEADER_HEIGHT : 0) + 8;
     const opensUpward = rect.bottom + menuHeight + 8 > window.innerHeight;
 
     setPosition({
@@ -147,8 +151,14 @@ export default function DropdownMenu({
             aria-label={label}
             onKeyDown={handleMenuKeyDown}
             style={{ top: position.top, right: position.right }}
-            className="fixed z-[60] w-44 rounded-lg border bg-card p-1 shadow-lg"
+            className="fixed z-[60] w-56 rounded-lg border bg-card p-1 shadow-lg"
           >
+            {header && (
+              <div className="mb-1 border-b pb-1" role="presentation">
+                {header}
+              </div>
+            )}
+
             {items.map((item) => {
               const Icon = item.icon;
               const isCheckable = item.checked !== undefined;

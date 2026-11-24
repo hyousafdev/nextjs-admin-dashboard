@@ -1,14 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { CurrentUserProvider } from "@/components/auth/CurrentUserProvider";
 import Sidebar from "@/components/layout/Sidebar";
 import Topbar from "@/components/layout/Topbar";
+import type { SessionUser } from "@/lib/auth-types";
 
 type DashboardShellProps = {
+  user: SessionUser;
   children: React.ReactNode;
 };
 
-export default function DashboardShell({ children }: DashboardShellProps) {
+export default function DashboardShell({
+  user,
+  children,
+}: DashboardShellProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
@@ -24,21 +30,23 @@ export default function DashboardShell({ children }: DashboardShellProps) {
   }, []);
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar
-        isCollapsed={isCollapsed}
-        isMobileOpen={isMobileOpen}
-        onCloseMobile={() => setIsMobileOpen(false)}
-      />
-
-      <div className="flex min-w-0 flex-1 flex-col">
-        <Topbar
+    <CurrentUserProvider user={user}>
+      <div className="flex min-h-screen">
+        <Sidebar
           isCollapsed={isCollapsed}
-          onToggleCollapse={() => setIsCollapsed((value) => !value)}
-          onOpenMobile={() => setIsMobileOpen(true)}
+          isMobileOpen={isMobileOpen}
+          onCloseMobile={() => setIsMobileOpen(false)}
         />
-        <main className="flex-1 p-4 sm:p-6">{children}</main>
+
+        <div className="flex min-w-0 flex-1 flex-col">
+          <Topbar
+            isCollapsed={isCollapsed}
+            onToggleCollapse={() => setIsCollapsed((value) => !value)}
+            onOpenMobile={() => setIsMobileOpen(true)}
+          />
+          <main className="flex-1 p-4 sm:p-6">{children}</main>
+        </div>
       </div>
-    </div>
+    </CurrentUserProvider>
   );
 }
