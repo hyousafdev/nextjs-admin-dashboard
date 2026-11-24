@@ -17,6 +17,13 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // The home page has no content: send people where they belong.
+  if (pathname === "/") {
+    return NextResponse.redirect(
+      new URL(session ? "/dashboard" : "/login", request.url),
+    );
+  }
+
   if (isProtectedPath(pathname)) {
     if (!session) {
       const loginUrl = new URL("/login", request.url);
