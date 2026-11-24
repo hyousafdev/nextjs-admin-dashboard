@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, Settings } from "lucide-react";
+import { ChevronDown, LogOut, Settings } from "lucide-react";
 import { logoutAction } from "@/actions/auth";
 import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 import Badge from "@/components/ui/Badge";
@@ -44,8 +44,19 @@ export default function UserMenu() {
         },
       ]}
     >
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-        {getInitials(user.name)}
+      <span className="flex items-center gap-2">
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+          {getInitials(user.name)}
+        </span>
+        <span className="hidden text-left md:block">
+          <span className="block text-sm font-medium leading-tight text-foreground">
+            {user.name}
+          </span>
+          <span className="block text-xs capitalize leading-tight text-muted-foreground">
+            {user.role}
+          </span>
+        </span>
+        <ChevronDown className="hidden h-4 w-4 md:block" />
       </span>
     </DropdownMenu>
   );
