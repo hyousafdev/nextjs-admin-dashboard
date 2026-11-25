@@ -22,6 +22,12 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  // A private admin app: keep every page, including the login pages,
+  // out of search results.
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function RootLayout({
